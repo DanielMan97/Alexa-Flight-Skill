@@ -8,6 +8,7 @@ var dateFormat = require('dateformat');
 
 
 
+//2 Handlers
 
 var handlers = {
   'LaunchRequest': function() {
@@ -19,9 +20,10 @@ var handlers = {
         airline = airline.charAt(0).toUpperCase() + airline.slice(1);
     var flightNumber = IATA[airline] + this.event.request.intent.slots.FlightNumber.value;
 
+    //API and endpoint
     rapid.call('LaminarFlightData', 'getFlightsByAirline', {
-    	'userKey': '##########################',
-    	'airlinePrefix': ICAO[airline]
+    	'userKey': '##########################', //Need to obtain Laminar User Key
+    	'airlinePrefix': ICAO[airline] //Finding Airline by Prefix
 
     }).on('success', (payload) => {
       var flightList = payload["message:flightMessage"]["fx:Flight"];
@@ -47,6 +49,9 @@ var handlers = {
   }
 };
 
+
+
+//Function that Alexa looks for every time an event is triggered
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = "##########################";
